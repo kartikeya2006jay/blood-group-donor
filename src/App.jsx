@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-// Components
 import NavBar from './components/NavBar';
 import StatsBar from './components/StatsBar';
 import BloodGroupFilter from './components/BloodGroupFilter';
@@ -10,19 +9,11 @@ import DonorList from './components/DonorList';
 import LoadingSpinner from './components/LoadingSpinner';
 import NoDonorsFound from './components/NoDonorsFound';
 
-// ─────────────────────────────────────────────
-// Blood groups to randomly assign to each user
-// ─────────────────────────────────────────────
 const BLOOD_GROUPS = ['A+', 'A−', 'B+', 'B−', 'O+', 'O−', 'AB+', 'AB−'];
 
-/**
- * Map a raw JSONPlaceholder user object → donor object
- * We deterministically assign blood group and availability
- * based on the user's id so results are consistent on re-fetch.
- */
 function mapUserToDonor(user) {
   const bloodGroup = BLOOD_GROUPS[user.id % BLOOD_GROUPS.length];
-  const available = user.id % 3 !== 0;           // ~67% available
+  const available = user.id % 3 !== 0;
   return {
     id: user.id,
     name: user.name,
@@ -35,19 +26,14 @@ function mapUserToDonor(user) {
   };
 }
 
-// ─────────────────────────────────────────────
-// Root App Component
-// ─────────────────────────────────────────────
 function App() {
-  // ── State ────────────────────────────────────
-  const [donors, setDonors] = useState([]);          // Full donor list from API
-  const [loading, setLoading] = useState(true);         // Loading spinner
-  const [error, setError] = useState(null);          // Error message
-  const [selectedBloodGroup, setSelectedBloodGroup] = useState('All');  // Dropdown filter
-  const [citySearch, setCitySearch] = useState('');            // City search input
-  const [requestStatus, setRequestStatus] = useState({});            // { [id]: true } per donor
+  const [donors, setDonors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState('All');
+  const [citySearch, setCitySearch] = useState('');
+  const [requestStatus, setRequestStatus] = useState({});
 
-  // ── Side Effect: Fetch donors on mount ───────
   useEffect(() => {
     async function fetchDonors() {
       try {
@@ -70,9 +56,8 @@ function App() {
     }
 
     fetchDonors();
-  }, []); // Empty dependency array → runs only once on mount
+  }, []);
 
-  // ── Derived State: Filtered donors ───────────
   const filteredDonors = donors.filter((donor) => {
     const matchesBloodGroup =
       selectedBloodGroup === 'All' || donor.bloodGroup === selectedBloodGroup;
@@ -84,11 +69,9 @@ function App() {
     return matchesBloodGroup && matchesCity;
   });
 
-  // ── Stats (derived) ───────────────────────────
   const availableCount = filteredDonors.filter((d) => d.available).length;
   const requestedCount = Object.values(requestStatus).filter(Boolean).length;
 
-  // ── Handler: Request Help button click ───────
   function handleRequest(donorId) {
     setRequestStatus((prev) => ({
       ...prev,
@@ -96,21 +79,18 @@ function App() {
     }));
   }
 
-  // ── Render ────────────────────────────────────
   return (
     <div className="app">
       <NavBar />
 
       <main className="main-content">
         <div className="container">
-          {/* Stats bar */}
           <StatsBar
             total={filteredDonors.length}
             available={availableCount}
             requested={requestedCount}
           />
 
-          {/* Controls: Filter + Search */}
           <div className="controls-row">
             <BloodGroupFilter
               value={selectedBloodGroup}
@@ -122,23 +102,18 @@ function App() {
             />
           </div>
 
-          {/* Conditional Rendering */}
           {loading ? (
-            /* Loading State */
             <LoadingSpinner />
           ) : error ? (
-            /* Error State */
             <div className="center-box">
               <p style={{ color: 'var(--red-primary)', fontWeight: 600 }}>⚠️ {error}</p>
             </div>
           ) : filteredDonors.length === 0 ? (
-            /* Empty State */
             <NoDonorsFound
               selectedBloodGroup={selectedBloodGroup}
               citySearch={citySearch}
             />
           ) : (
-            /* Donor Grid */
             <DonorList
               donors={filteredDonors}
               requestStatus={requestStatus}
