@@ -1,8 +1,6 @@
 import './LoadingSpinner.css';
 
-/**
- * LoadingSpinner – Shown while API data is loading
- */
+
 function LoadingSpinner() {
     return (
         <div className="spinner-wrapper" role="status" aria-label="Loading donors...">

@@ -1,12 +1,6 @@
 import './DonorCard.css';
 
-/**
- * DonorCard – Displays a single donor's information
- * Props:
- *   donor         {object}   – donor data object
- *   isRequested   {boolean}  – whether request has been sent
- *   onRequest     {function} – called with donor.id when button is clicked
- */
+
 function DonorCard({ donor, isRequested, onRequest }) {
     // Get initials for avatar
     const initials = donor.name

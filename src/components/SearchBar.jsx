@@ -1,11 +1,5 @@
 import './SearchBar.css';
 
-/**
- * SearchBar – City search input (Bonus feature)
- * Props:
- *   value          {string}   – current search text
- *   onSearchChange {function} – called with new value
- */
 function SearchBar({ value, onSearchChange }) {
     return (
         <div className="search-group">

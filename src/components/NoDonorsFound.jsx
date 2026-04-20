@@ -1,11 +1,5 @@
 import './NoDonorsFound.css';
 
-/**
- * NoDonorsFound – Empty state when filters return no results
- * Props:
- *   selectedBloodGroup {string} – current filter (to show in hint)
- *   citySearch         {string} – current city search
- */
 function NoDonorsFound({ selectedBloodGroup, citySearch }) {
     return (
         <div className="no-donors" role="status">

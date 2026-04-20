@@ -1,12 +1,5 @@
 import './StatsBar.css';
 
-/**
- * StatsBar – Shows live donor statistics
- * Props:
- *   total         {number} – total donors fetched
- *   available     {number} – donors with availability === true
- *   requested     {number} – donors whose request has been sent
- */
 function StatsBar({ total, available, requested }) {
     return (
         <div className="stats-bar">

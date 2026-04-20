@@ -1,9 +1,6 @@
 import './NavBar.css';
 
-/**
- * NavBar – Sticky top navigation bar
- * Props: none (display-only)
- */
+
 function NavBar() {
   return (
     <nav className="navbar">
